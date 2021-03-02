@@ -1,26 +1,19 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/db');
 
-const Model = Sequelize.Model;
-
-class User extends Model {}
-
+class User extends Sequelize.Model {}
 User.init(
   {
     username: {
       type: Sequelize.STRING,
     },
-    email: {
-      type: Sequelize.STRING,
-    },
     password: {
       type: Sequelize.STRING,
     },
+    email: {
+      type: Sequelize.STRING,
+    },
   },
-  {
-    sequelize,
-    modelName: 'User',
-  }
+  { sequelize, modelName: 'User' }
 );
-
 module.exports = User;

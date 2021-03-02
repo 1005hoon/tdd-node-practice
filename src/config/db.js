@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('hoaxify', 'test-user', 'test-user-pw', {
+const sequelize = new Sequelize('tddApp', 'testuser', 'userpw', {
   dialect: 'sqlite',
   storage: './database.sqlite',
 });
 
-module.eports = sequelize;
+module.exports = sequelize;
