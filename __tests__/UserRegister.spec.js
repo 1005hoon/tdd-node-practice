@@ -13,28 +13,29 @@ beforeEach(() => {
   return User.destroy({ truncate: true });
 });
 
-describe('User Registration', () => {
-  const createValidUser = async (username = 'user1', email = 'user1@mail.com', password = 'user123123') => {
-    return await request(app).post('/api/v1/users').send({
-      username,
-      email,
-      password,
-    });
-  };
+const validUser = {
+  username: 'user1',
+  email: 'user1@mail.com',
+  password: 'user123123',
+};
+const createUser = async (user = validUser) => {
+  return await request(app).post('/api/v1/users').send(user);
+};
 
+describe('User Registration', () => {
   test('returns 201 Created when signup request is valid', async () => {
-    const { statusCode } = await createValidUser();
+    const { statusCode } = await createUser();
     expect(statusCode).toBe(201);
   });
 
   test('returns success message when signup request is valid', async () => {
-    const { body } = await createValidUser();
+    const { body } = await createUser();
     expect(body.message).toBe('User Created');
   });
 
   test('saves the user to database', async () => {
     // save user
-    await createValidUser();
+    await createUser();
 
     // query to see if user is saved
     const users = await User.findAll();
@@ -43,7 +44,7 @@ describe('User Registration', () => {
 
   test('saves the username and email to database', async () => {
     // save user
-    await createValidUser();
+    await createUser();
 
     // query to see if user is saved
     const users = await User.findAll();
@@ -53,11 +54,20 @@ describe('User Registration', () => {
   });
 
   test('hashes the password in database', async () => {
-    await createValidUser();
+    await createUser();
     const users = await User.findAll();
     const { username, email, password } = users[0];
     expect(username).toBe('user1');
     expect(email).toBe('user1@mail.com');
     expect(password).not.toBe('user123123');
+  });
+
+  test('returns 400 when username is null', async () => {
+    const { statusCode } = await createUser({
+      username: null,
+      email: 'email123@mail.com',
+      password: 'passwodr123',
+    });
+    expect(statusCode).toBe(400);
   });
 });
