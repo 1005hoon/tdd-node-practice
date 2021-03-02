@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../src/app');
-const User = require('../src/user/User');
+const User = require('../src/models/User');
 const sequelize = require('../src/config/db');
 
 // initialize db
@@ -24,7 +24,7 @@ describe('User Registration', () => {
     done();
   });
 
-  test('returns succes message when signup request is valid', async (done) => {
+  test('returns success message when signup request is valid', async (done) => {
     const { body } = await request(app).post('/api/v1/users').send({
       username: 'user1',
       email: 'user1@mail.com',
