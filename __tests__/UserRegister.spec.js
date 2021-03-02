@@ -70,4 +70,42 @@ describe('User Registration', () => {
     });
     expect(statusCode).toBe(400);
   });
+
+  test('returns validationErrors field in response body when validation error occurs', async () => {
+    const { body } = await createUser({
+      username: null,
+      email: 'email123@mail.com',
+      password: 'passwodr123',
+    });
+    expect(body.validationErrors).not.toBeUndefined;
+  });
+
+  test('returns username cannot be null when username is null', async () => {
+    const { body } = await createUser({
+      username: null,
+      email: 'email123@mail.com',
+      password: 'passwodr123',
+    });
+    expect(body.validationErrors.username).toBe('Username cannot be null');
+  });
+
+  test('returns email cannot be null when email is null', async () => {
+    const { body } = await createUser({
+      username: 'user1',
+      email: null,
+      password: 'passwodr123',
+    });
+
+    expect(body.validationErrors.email).toBe('Email cannot be null');
+  });
+
+  test('returns errors for both when username and email is null', async () => {
+    const { body } = await createUser({
+      username: null,
+      email: null,
+      password: 'passwodr123',
+    });
+
+    expect(Object.keys(body.validationErrors)).toEqual(['email', 'username']);
+  });
 });
