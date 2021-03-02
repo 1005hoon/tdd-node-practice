@@ -106,6 +106,6 @@ describe('User Registration', () => {
       password: 'passwodr123',
     });
 
-    expect(Object.keys(body.validationErrors)).toEqual(['email', 'username']);
+    expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
   });
 });
