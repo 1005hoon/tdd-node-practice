@@ -1,0 +1,10 @@
+{
+  "database": {
+    "database": "tddApp",
+    "username": "testuser",
+    "password": "userpw",
+    "dialect": "sqlite",
+    "storage": "./database.sqlite",
+    "logging": false
+  }
+}

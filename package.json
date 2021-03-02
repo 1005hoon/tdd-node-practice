@@ -4,19 +4,21 @@
   "description": "tdd with node express",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app",
-    "test": "jest --watchAll",
+    "start": "cross-env NODE_ENV=development nodemon server",
+    "test": "cross-env NODE_ENV=test jest --watchAll",
     "lint": "eslint . --fix"
   },
   "author": "Hoon Oh",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "config": "^3.3.4",
     "express": "^4.17.1",
     "sequelize": "^6.5.0",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
