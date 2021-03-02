@@ -47,4 +47,20 @@ describe('User Registration', () => {
     expect(users.length).toBe(1);
     done();
   });
+
+  test('saves the username and email to database', async (done) => {
+    // save user
+    await request(app).post('/api/v1/users').send({
+      username: 'user1',
+      email: 'user1@mail.com',
+      password: 'user123123',
+    });
+
+    // query to see if user is saved
+    const users = await User.findAll();
+    const user = users[0];
+    expect(user.username).toBe('user1');
+    expect(user.email).toBe('user1@mail.com');
+    done();
+  });
 });
