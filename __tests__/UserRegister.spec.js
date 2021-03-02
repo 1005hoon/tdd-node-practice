@@ -1,5 +1,17 @@
 const request = require('supertest');
 const app = require('../src/app');
+const User = require('../src/user/User');
+const sequelize = require('../src/config/db');
+
+// initialize db
+beforeAll(() => {
+  return sequelize.sync();
+});
+
+// clean user table before each table to allow independency of all tests
+beforeEach(() => {
+  return User.destroy({ truncate: true });
+});
 
 describe('User Registration', () => {
   test('returns 200 OK when signup request is valid', async (done) => {
@@ -19,6 +31,20 @@ describe('User Registration', () => {
       password: 'user123123',
     });
     expect(body.message).toBe('User Created');
+    done();
+  });
+
+  test('saves the user to database', async (done) => {
+    // save user
+    await request(app).post('/api/v1/users').send({
+      username: 'user1',
+      email: 'user1@mail.com',
+      password: 'user123123',
+    });
+
+    // query to see if user is saved
+    const users = await User.findAll();
+    expect(users.length).toBe(1);
     done();
   });
 });
